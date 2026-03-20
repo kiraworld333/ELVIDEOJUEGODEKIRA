@@ -1,0 +1,4146 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Kira" />
+    <title>El Tablero de Kira ⭐</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        height: 100%;
+        overflow-x: hidden;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      body {
+        font-family: Nunito, sans-serif;
+        background: #fff5f5;
+        min-height: 100vh;
+        padding-bottom: 80px;
+      }
+
+      .hdr {
+        background: linear-gradient(
+          160deg,
+          #cc0000 0%,
+          #ff2020 40%,
+          #cc0000 100%
+        );
+        padding: 14px 20px 12px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hdr::after {
+        content: "";
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        width: 140px;
+        height: 140px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 200, 0, 0.18) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+      }
+      .hdr h1 {
+        font-family: "Fredoka One", cursive;
+        font-size: 24px;
+        color: #fff;
+        text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+        line-height: 1.15;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-compact {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: linear-gradient(135deg, #ff0000, #cc0000);
+        border-radius: 18px;
+        padding: 12px 16px;
+        color: #fff;
+        margin: 10px 14px 0;
+        box-shadow: 0 6px 24px rgba(255, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-compact::after {
+        content: "";
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        width: 70px;
+        height: 70px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+      }
+      .hero-star-img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 2px 8px rgba(255, 200, 0, 0.5));
+      }
+      .hero-info {
+        flex: 1;
+        position: relative;
+        z-index: 1;
+      }
+      .hero-num {
+        font-family: "Fredoka One", cursive;
+        font-size: 32px;
+        line-height: 1;
+      }
+      .hero-lbl {
+        font-size: 11px;
+        font-weight: 700;
+        opacity: 0.85;
+      }
+      .hero-bar-bg {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        height: 8px;
+        margin-top: 6px;
+        overflow: hidden;
+      }
+      .hero-bar-fill {
+        height: 100%;
+        background: #fff;
+        border-radius: 8px;
+        transition: width 0.4s ease;
+        min-width: 4%;
+      }
+      .hero-obj {
+        font-size: 10px;
+        font-weight: 700;
+        opacity: 0.7;
+        margin-top: 2px;
+      }
+      .hero-side {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      .hero-side-num {
+        font-family: "Fredoka One", cursive;
+        font-size: 18px;
+        line-height: 1;
+      }
+      .hero-side-lbl {
+        font-size: 9px;
+        font-weight: 700;
+        opacity: 0.7;
+      }
+
+      .streak-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 16px;
+        margin: 8px 14px 0;
+        background: linear-gradient(135deg, #ff6b00, #ff9500);
+        border-radius: 14px;
+        box-shadow: 0 3px 12px rgba(255, 107, 0, 0.3);
+      }
+      .streak-bar .fire {
+        font-size: 22px;
+      }
+      .streak-bar .stxt {
+        font-family: "Fredoka One", cursive;
+        font-size: 15px;
+        color: #fff;
+      }
+
+      .nav-tabs {
+        display: flex;
+        margin: 12px 14px 0;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        border: 2px solid #fee2e2;
+      }
+      .nav-tab {
+        flex: 1;
+        padding: 12px 8px;
+        border: none;
+        background: transparent;
+        font-family: "Fredoka One", cursive;
+        font-size: 15px;
+        color: #d1d5db;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: all 0.2s;
+      }
+      .nav-tab.on {
+        background: linear-gradient(135deg, #ff0000, #cc0000);
+        color: #fff;
+        border-radius: 12px;
+        margin: 3px;
+      }
+      .nav-tab-ico {
+        font-size: 18px;
+      }
+
+      .pg {
+        display: none;
+        padding: 10px 14px 20px;
+      }
+      .pg.on {
+        display: block;
+      }
+
+      .sec-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 4px 6px;
+      }
+      .sec-ico {
+        font-size: 26px;
+      }
+      .sec-tit {
+        font-family: "Fredoka One", cursive;
+        font-size: 18px;
+        color: #1f2937;
+      }
+      .sec-count {
+        margin-left: auto;
+        font-family: "Fredoka One", cursive;
+        font-size: 13px;
+        color: #fff;
+        background: #ff0000;
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+
+      .mis-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+      .mis-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 14px 10px;
+        text-align: center;
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
+        border: 3px solid #f3f4f6;
+        position: relative;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: transform 0.15s;
+      }
+      .mis-card.hecha {
+        background: #fef9e7;
+        border-color: #fcd34d;
+        box-shadow: 0 4px 16px rgba(251, 191, 36, 0.25);
+      }
+      .mis-card.just-marked {
+        animation: cardPulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      @keyframes cardPulse {
+        0% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.12);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .mis-card .mis-emoji {
+        font-size: 36px;
+        line-height: 1;
+      }
+      .mis-card .mis-name {
+        font-size: 11px;
+        font-weight: 800;
+        color: #1f2937;
+        line-height: 1.2;
+      }
+      .mis-card.hecha .mis-name {
+        color: #92400e;
+      }
+      .mis-star {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        font-size: 26px;
+        filter: drop-shadow(0 2px 6px rgba(255, 200, 0, 0.6));
+        animation: starPulse 1.5s ease-in-out infinite;
+      }
+      @keyframes starPulse {
+        0%,
+        100% {
+          transform: scale(1) rotate(0deg);
+        }
+        50% {
+          transform: scale(1.2) rotate(10deg);
+        }
+      }
+
+      .extra-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px;
+        margin: 8px 0 4px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #fee2e2, #fff5f5);
+        border: 2.5px dashed #fecaca;
+        cursor: pointer;
+        font-family: "Fredoka One", cursive;
+        font-size: 15px;
+        color: #dc2626;
+        transition: all 0.2s;
+      }
+      .extra-toggle:active {
+        transform: scale(0.97);
+      }
+      .extra-toggle.open {
+        background: linear-gradient(135deg, #fef3c7, #fffbeb);
+        border-color: #fcd34d;
+        color: #b45309;
+      }
+      .extra-arrow {
+        transition: transform 0.3s;
+        font-size: 12px;
+      }
+      .extra-toggle.open .extra-arrow {
+        transform: rotate(180deg);
+      }
+
+      .kira-bloque {
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .kira-bloque-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+      }
+      .kira-bloque-ico {
+        font-size: 20px;
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .kira-bloque-tit {
+        font-family: "Fredoka One", cursive;
+        font-size: 17px;
+        color: #fff;
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+      }
+      .kira-bloque-body {
+        background: #fff;
+        padding: 14px;
+      }
+      .kira-bloque-pts {
+        margin-left: auto;
+        font-family: "Fredoka One", cursive;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.2);
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+
+      .premio-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 14px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 14px rgba(0, 0, 0, 0.07);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        transition: transform 0.15s;
+      }
+      .premio-card:active {
+        transform: scale(0.98);
+      }
+      .premio-card.listo {
+        background: #fffbeb;
+        border: 2.5px solid #fcd34d;
+        box-shadow: 0 4px 16px rgba(251, 191, 36, 0.2);
+      }
+      .premio-card.recogido {
+        background: #f0fdf4;
+        border: 2px solid #86efac;
+        opacity: 0.7;
+      }
+      .premio-emoji {
+        font-size: 34px;
+        flex-shrink: 0;
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: #fff9e6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .premio-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .premio-nombre {
+        font-family: "Fredoka One", cursive;
+        font-size: 15px;
+        color: #1f2937;
+        margin-bottom: 4px;
+      }
+      .premio-barra-bg {
+        background: #f3f4f6;
+        border-radius: 20px;
+        height: 8px;
+        overflow: hidden;
+        margin-bottom: 4px;
+      }
+      .premio-barra-fill {
+        height: 100%;
+        border-radius: 20px;
+        background: linear-gradient(90deg, #ffd700, #ffa500);
+        transition: width 0.6s ease;
+      }
+      .premio-sub {
+        font-size: 11px;
+        font-weight: 800;
+      }
+      .premio-badge {
+        font-size: 11px;
+        font-weight: 800;
+        padding: 6px 12px;
+        border-radius: 20px;
+        flex-shrink: 0;
+        text-align: center;
+      }
+
+      .cel-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 20px;
+      }
+      .cel-overlay.on {
+        display: flex;
+      }
+      .cel-char {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+        animation: charBounce 0.5s ease infinite alternate;
+        filter: drop-shadow(0 8px 24px rgba(255, 0, 0, 0.35));
+      }
+      @keyframes charBounce {
+        0% {
+          transform: scale(1) translateY(0) rotate(-3deg);
+        }
+        100% {
+          transform: scale(1.1) translateY(-12px) rotate(3deg);
+        }
+      }
+      @keyframes gentleFloat {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-2deg);
+        }
+        50% {
+          transform: translateY(-5px) rotate(2deg);
+        }
+      }
+      .cel-bubble {
+        background: #fff;
+        border-radius: 20px 20px 20px 4px;
+        padding: 12px 18px;
+        font-size: 15px;
+        font-weight: 800;
+        color: #1f2937;
+        margin-top: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        max-width: 280px;
+        text-align: center;
+        animation: popIn 0.3s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+      }
+      .cel-title {
+        font-family: "Fredoka One", cursive;
+        font-size: 22px;
+        color: #ffd700;
+        margin-top: 14px;
+        text-shadow: 0 2px 8px rgba(255, 200, 0, 0.5);
+        animation: popIn 0.3s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+      }
+      .cel-stars-big {
+        font-family: "Fredoka One", cursive;
+        font-size: 60px;
+        color: #ffd700;
+        text-shadow: 0 4px 12px rgba(255, 200, 0, 0.5);
+        margin-top: 6px;
+        animation: popIn 0.3s 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+      }
+      .cel-btn {
+        margin-top: 20px;
+        padding: 16px 50px;
+        border-radius: 20px;
+        border: none;
+        background: linear-gradient(135deg, #ff0000, #cc0000);
+        color: #fff;
+        font-family: "Fredoka One", cursive;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
+        animation: popIn 0.3s 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+      }
+      @keyframes popIn {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes premioFloat {
+        0% {
+          transform: scale(1) translateY(0) rotate(-5deg);
+        }
+        100% {
+          transform: scale(1.15) translateY(-15px) rotate(5deg);
+        }
+      }
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      .conf {
+        position: fixed;
+        border-radius: 3px;
+        animation: fall 1.8s ease-in forwards;
+        z-index: 10000;
+        pointer-events: none;
+      }
+      @keyframes fall {
+        0% {
+          transform: translateY(-20px) rotate(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(110vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="hdr"
+      style="
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        text-align: left;
+      "
+    >
+      <img
+        id="saludo-char"
+        src="/personajes/bluey.png"
+        onerror="this.style.display='none'"
+        style="
+          width: 52px;
+          height: 52px;
+          object-fit: contain;
+          flex-shrink: 0;
+          filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
+          animation: gentleFloat 3s ease-in-out infinite;
+          position: relative;
+          z-index: 2;
+        "
+      />
+      <div style="position: relative; z-index: 2">
+        <h1
+          style="font-size: 20px; margin: 0; line-height: 1.2"
+          id="saludo-text"
+        >
+          ¡Hola Kira! 🌟
+        </h1>
+        <p style="margin-top: 2px" id="saludo-sub">¡A por tus estrellas!</p>
+      </div>
+    </div>
+
+    <!-- Mensaje motivacional -->
+    <div id="motiv-container" style="margin: 8px 14px 0; display: none">
+      <div
+        id="motiv-msg"
+        style="
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          background: #fff;
+          border-radius: 14px;
+          padding: 10px 14px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+          border: 1.5px solid #fee2e2;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          transition: transform 0.15s;
+        "
+        onclick="motivClick()"
+      >
+        <div id="motiv-emoji" style="font-size: 22px; flex-shrink: 0">💪</div>
+        <div
+          id="motiv-text"
+          style="
+            flex: 1;
+            font-size: 12px;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.4;
+          "
+        ></div>
+        <div
+          id="motiv-arrow"
+          style="font-size: 14px; color: #ccc; flex-shrink: 0; display: none"
+        >
+          ›
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-compact">
+      <img
+        class="hero-star-img"
+        src="/personajes/estrella_kira.png"
+        onerror="this.outerHTML='<div style=font-size:36px>⭐</div>'"
+      />
+      <div class="hero-info">
+        <div class="hero-num" id="hero-num">0</div>
+        <div class="hero-lbl">Estrellas de hoy ✨</div>
+        <div class="hero-bar-bg">
+          <div class="hero-bar-fill" id="hero-bar" style="width: 4%"></div>
+        </div>
+        <div class="hero-obj" id="hero-obj">0 de 10</div>
+      </div>
+      <div style="display: flex; gap: 10px">
+        <div class="hero-side">
+          <div class="hero-side-num" id="hero-sem">0</div>
+          <div class="hero-side-lbl">semana</div>
+        </div>
+        <div class="hero-side">
+          <div class="hero-side-num" id="hero-total">0</div>
+          <div class="hero-side-lbl">total</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="streak-container" style="display: none">
+      <div class="streak-bar">
+        <span class="fire">🔥</span><span class="stxt" id="streak-text"></span>
+      </div>
+    </div>
+
+    <!-- Nivel actual -->
+    <div
+      id="nivel-card"
+      onclick="abrirStats()"
+      style="
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #fff;
+        border-radius: 18px;
+        padding: 10px 14px;
+        margin: 10px 14px 0;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        border: 2px solid #fef3c7;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 0.15s;
+      "
+    >
+      <img
+        id="niv-img"
+        src="/niveles/1.png"
+        onerror="this.style.display='none'"
+        style="
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
+          flex-shrink: 0;
+          filter: drop-shadow(0 3px 8px rgba(255, 180, 0, 0.4));
+        "
+      />
+      <div style="flex: 1; min-width: 0">
+        <div
+          id="niv-name"
+          style="
+            font-family: 'Fredoka One', cursive;
+            font-size: 15px;
+            color: #1f2937;
+            line-height: 1.2;
+          "
+        >
+          Aprendiz Magica
+        </div>
+        <div
+          style="
+            background: #f3f4f6;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 6px;
+          "
+        >
+          <div
+            id="niv-bar"
+            style="
+              height: 100%;
+              border-radius: 10px;
+              background: linear-gradient(90deg, #ffd700, #ff8c00);
+              transition: width 0.6s ease;
+              width: 4%;
+            "
+          ></div>
+        </div>
+        <div
+          id="niv-hint"
+          style="
+            font-size: 10px;
+            font-weight: 700;
+            color: #aaa;
+            margin-top: 2px;
+          "
+        >
+          0 / 50 para el siguiente
+        </div>
+      </div>
+      <div style="font-size: 14px; color: #d1d5db; flex-shrink: 0">›</div>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab on" id="tab-mis" onclick="goTab('mis')">
+        <span class="nav-tab-ico">⭐</span> Misiones
+      </button>
+      <button
+        class="nav-tab"
+        id="tab-pre"
+        onclick="goTab('pre')"
+        style="position: relative"
+      >
+        <span class="nav-tab-ico">🎁</span> Premios<span
+          id="premio-badge-tab"
+          style="
+            display: none;
+            position: absolute;
+            top: 4px;
+            right: 12px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff0000;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            font-family: Nunito, sans-serif;
+            line-height: 18px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(255, 0, 0, 0.4);
+            animation: starPulse 1.5s ease-in-out infinite;
+          "
+        ></span>
+      </button>
+      <button class="nav-tab" id="tab-jue" onclick="goTab('jue')">
+        <span class="nav-tab-ico">🎮</span> Juegos
+      </button>
+    </div>
+
+    <div class="pg on" id="pg-mis"><div id="board"></div></div>
+    <div class="pg" id="pg-pre"><div id="premios-list"></div></div>
+    <div class="pg" id="pg-jue">
+      <div style="padding: 4px 0 16px">
+        <!-- JUEGO 1: Memoria -->
+        <div
+          style="
+            padding: 12px 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <span style="font-size: 26px">🎮</span>
+          <span
+            style="
+              font-family: 'Fredoka One', cursive;
+              font-size: 18px;
+              color: #1f2937;
+            "
+            >Juegos de Kira</span
+          >
+        </div>
+        <div
+          onclick="abrirJuego('memoria')"
+          style="
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #f3f4f6;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <!-- Header del juego -->
+          <div
+            style="
+              background: linear-gradient(135deg, #7c3aed, #a855f7);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 90px;
+                height: 90px;
+                background: rgba(255, 255, 255, 0.12);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 48px;
+                  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+                  animation: gentleFloat 3s ease-in-out infinite;
+                "
+              >
+                🃏
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+                  "
+                >
+                  Juego de Memoria
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.85);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  Encuentra las parejas ✨
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Cuerpo del juego -->
+          <div
+            style="
+              padding: 14px 18px 16px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 8px; margin-bottom: 10px">
+                <div
+                  style="
+                    background: #f5f3ff;
+                    border-radius: 12px;
+                    padding: 6px 12px;
+                    text-align: center;
+                    border: 2px solid #ede9fe;
+                  "
+                >
+                  <div
+                    style="
+                      font-family: 'Fredoka One', cursive;
+                      font-size: 16px;
+                      color: #7c3aed;
+                    "
+                  >
+                    ⭐
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Fácil
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #f5f3ff;
+                    border-radius: 12px;
+                    padding: 6px 12px;
+                    text-align: center;
+                    border: 2px solid #ede9fe;
+                  "
+                >
+                  <div
+                    style="
+                      font-family: 'Fredoka One', cursive;
+                      font-size: 16px;
+                      color: #7c3aed;
+                    "
+                  >
+                    ⭐⭐
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Normal
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #f5f3ff;
+                    border-radius: 12px;
+                    padding: 6px 12px;
+                    text-align: center;
+                    border: 2px solid #ede9fe;
+                  "
+                >
+                  <div
+                    style="
+                      font-family: 'Fredoka One', cursive;
+                      font-size: 16px;
+                      color: #7c3aed;
+                    "
+                  >
+                    ⭐⭐⭐
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Difícil
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                Con tus personajes favoritos 🦄
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #7c3aed, #a855f7);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+                white-space: nowrap;
+              "
+            >
+              ¡Jugar! →
+            </div>
+          </div>
+        </div>
+
+        <!-- JUEGO 2: ¿Quién se esconde? -->
+        <div
+          onclick="abrirJuego('esconde')"
+          style="
+            margin-top: 12px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #f3f4f6;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              background: linear-gradient(135deg, #dc2626, #ff6b6b);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 90px;
+                height: 90px;
+                background: rgba(255, 255, 255, 0.12);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 48px;
+                  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+                  animation: gentleFloat 2.8s ease-in-out infinite;
+                  animation-delay: 0.5s;
+                "
+              >
+                🙈
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+                  "
+                >
+                  ¿Quién se esconde?
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.85);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  ¡Memoriza y descubre quién falta! 👀
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div
+                  style="
+                    background: #fef2f2;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fecaca;
+                  "
+                >
+                  <div style="font-size: 16px">👀</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Mira
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #fef2f2;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fecaca;
+                  "
+                >
+                  <div style="font-size: 16px">🙈</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Esconde
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #fef2f2;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fecaca;
+                  "
+                >
+                  <div style="font-size: 16px">🤔</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Adivina
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                10 rondas · Cuenta atrás 3-2-1 🎯
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #dc2626, #ff6b6b);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+                white-space: nowrap;
+              "
+            >
+              ¡Jugar! →
+            </div>
+          </div>
+        </div>
+
+        <!-- JUEGO 3: Encuentra el diferente -->
+        <div
+          onclick="abrirJuego('intruso')"
+          style="
+            margin-top: 12px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #f3f4f6;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              background: linear-gradient(135deg, #b45309, #f59e0b);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 90px;
+                height: 90px;
+                background: rgba(255, 255, 255, 0.12);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 48px;
+                  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+                  animation: gentleFloat 3.2s ease-in-out infinite;
+                  animation-delay: 1s;
+                "
+              >
+                🔍
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+                  "
+                >
+                  ¡Encuentra el diferente!
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.85);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  3 iguales · 1 diferente · ¡Encuéntralo! 🕵️
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div
+                  style="
+                    background: #fffbeb;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fde68a;
+                  "
+                >
+                  <div style="font-size: 16px">🐶</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    ×3
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #fffbeb;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #f59e0b;
+                  "
+                >
+                  <div style="font-size: 16px">🐱</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #b45309"
+                  >
+                    ¡Este!
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                10 rondas · ¡Cada vez más rápido! ⚡
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #b45309, #f59e0b);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(180, 83, 9, 0.35);
+                white-space: nowrap;
+              "
+            >
+              ¡Jugar! →
+            </div>
+          </div>
+        </div>
+
+        <!-- JUEGO 4: ¡Cuenta conmigo! -->
+        <div
+          onclick="abrirJuego('cuenta')"
+          style="
+            margin-top: 12px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #f3f4f6;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              background: linear-gradient(135deg, #0369a1, #38bdf8);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 90px;
+                height: 90px;
+                background: rgba(255, 255, 255, 0.12);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 48px;
+                  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+                  animation: gentleFloat 3s ease-in-out infinite;
+                  animation-delay: 1.4s;
+                "
+              >
+                🔢
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+                  "
+                >
+                  ¡Cuenta conmigo!
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.85);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  ¿Cuántos personajes hay? 🧮
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div
+                  style="
+                    background: #e0f2fe;
+                    border-radius: 10px;
+                    padding: 5px 14px;
+                    text-align: center;
+                    border: 2px solid #bae6fd;
+                  "
+                >
+                  <div
+                    style="
+                      font-family: 'Fredoka One', cursive;
+                      font-size: 18px;
+                      color: #0369a1;
+                    "
+                  >
+                    1
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    uno
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #e0f2fe;
+                    border-radius: 10px;
+                    padding: 5px 14px;
+                    text-align: center;
+                    border: 2px solid #bae6fd;
+                  "
+                >
+                  <div
+                    style="
+                      font-family: 'Fredoka One', cursive;
+                      font-size: 18px;
+                      color: #0369a1;
+                    "
+                  >
+                    3
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    tres
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #e0f2fe;
+                    border-radius: 10px;
+                    padding: 5px 14px;
+                    text-align: center;
+                    border: 2px solid #bae6fd;
+                  "
+                >
+                  <div
+                    style="
+                      font-family: 'Fredoka One', cursive;
+                      font-size: 18px;
+                      color: #0369a1;
+                    "
+                  >
+                    5
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    cinco
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                Aprende a contar del 1 al 5 ✨
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #0369a1, #38bdf8);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(3, 105, 161, 0.35);
+                white-space: nowrap;
+              "
+            >
+              ¡Jugar! →
+            </div>
+          </div>
+        </div>
+
+        <!-- JUEGO 5: ¡Atrápalo! -->
+        <div
+          onclick="abrirJuego('atrapalo')"
+          style="
+            margin-top: 12px;
+            margin-bottom: 8px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #f3f4f6;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              background: linear-gradient(135deg, #065f46, #10b981);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 90px;
+                height: 90px;
+                background: rgba(255, 255, 255, 0.12);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 48px;
+                  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+                  animation: gentleFloat 2.6s ease-in-out infinite;
+                  animation-delay: 0.8s;
+                "
+              >
+                🎯
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+                  "
+                >
+                  ¡Atrápalo!
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.85);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  ¡Toca los personajes antes de que escapen! 💨
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div
+                  style="
+                    background: #d1fae5;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #6ee7b7;
+                  "
+                >
+                  <div style="font-size: 16px">⚡</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Rápido
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #d1fae5;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #6ee7b7;
+                  "
+                >
+                  <div style="font-size: 16px">👆</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Toca
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #d1fae5;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #6ee7b7;
+                  "
+                >
+                  <div style="font-size: 16px">🏆</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    ¡Gana!
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                ¡Muy divertido! · Acierta 20 personajes 🌟
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #065f46, #10b981);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(6, 95, 70, 0.35);
+                white-space: nowrap;
+              "
+            >
+              ¡Jugar! →
+            </div>
+          </div>
+        </div>
+
+        <!-- JUEGO 6: ¡Explota las burbujas! ⭐ EL FAVORITO -->
+        <div
+          onclick="abrirJuego('burbujas')"
+          style="
+            margin-top: 12px;
+            margin-bottom: 8px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #bae6fd;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              position: absolute;
+              top: -1px;
+              right: 14px;
+              background: linear-gradient(135deg, #ffd700, #ff9500);
+              border-radius: 0 0 12px 12px;
+              padding: 4px 12px;
+              font-family: 'Fredoka One', cursive;
+              font-size: 11px;
+              color: #fff;
+              box-shadow: 0 2px 8px rgba(255, 149, 0, 0.35);
+              z-index: 1;
+            "
+          >
+            ⭐ FAVORITO
+          </div>
+          <div
+            style="
+              background: linear-gradient(135deg, #0ea5e9, #38bdf8, #7dd3fc);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 100px;
+                height: 100px;
+                background: rgba(255, 255, 255, 0.15);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                position: absolute;
+                bottom: -15px;
+                left: 30%;
+                width: 70px;
+                height: 70px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 52px;
+                  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+                  animation: gentleFloat 2.4s ease-in-out infinite;
+                "
+              >
+                🫧
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+                  "
+                >
+                  ¡Explota las burbujas!
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.9);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  ¡Toca y haz POP! 💥 Modo libre + busca
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div
+                  style="
+                    background: #e0f2fe;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #bae6fd;
+                  "
+                >
+                  <div style="font-size: 16px">🎈</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Libre
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #e0f2fe;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #bae6fd;
+                  "
+                >
+                  <div style="font-size: 16px">🔍</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Busca
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #e0f2fe;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #bae6fd;
+                  "
+                >
+                  <div style="font-size: 16px">💥</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    ¡POP!
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                ¡Sin reglas · Solo diversión! ∞
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(14, 165, 233, 0.4);
+                white-space: nowrap;
+              "
+            >
+              ¡Jugar! →
+            </div>
+          </div>
+        </div>
+
+        <!-- MASCOTA: Eevee 🐾 -->
+        <div
+          onclick="abrirJuego('eevee')"
+          style="
+            margin-top: 12px;
+            margin-bottom: 8px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #fed7aa;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              background: linear-gradient(135deg, #ff9d6c, #ff6b35, #ff9d6c);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 100px;
+                height: 100px;
+                background: rgba(255, 255, 255, 0.15);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 52px;
+                  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+                  animation: gentleFloat 2.8s ease-in-out infinite;
+                "
+              >
+                🐾
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+                  "
+                >
+                  Eevee, tu Pomeranian
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.9);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  ¡Dale de comer, bañarle y jugar! 🛁🎾
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div
+                  style="
+                    background: #fff7ed;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fed7aa;
+                  "
+                >
+                  <div style="font-size: 16px">🍗</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Comer
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #fff7ed;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fed7aa;
+                  "
+                >
+                  <div style="font-size: 16px">🛁</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Bañar
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #fff7ed;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fed7aa;
+                  "
+                >
+                  <div style="font-size: 16px">🎾</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Jugar
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                Tamagotchi real · ¡Te recuerda siempre! 💾
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #ff9d6c, #ff6b35);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(255, 107, 53, 0.4);
+                white-space: nowrap;
+              "
+            >
+              ¡Visitar! →
+            </div>
+          </div>
+        </div>
+        <!-- JUEGO 7: ¡Lanza y Derriba! — Angry Birds -->
+        <div
+          onclick="abrirJuego('lanza')"
+          style="
+            margin-top: 12px;
+            margin-bottom: 8px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #bbdefb;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              position: absolute;
+              top: -1px;
+              left: 14px;
+              background: linear-gradient(135deg, #1565c0, #2196f3);
+              border-radius: 0 0 12px 12px;
+              padding: 4px 12px;
+              font-family: 'Fredoka One', cursive;
+              font-size: 11px;
+              color: #fff;
+              box-shadow: 0 2px 8px rgba(33, 150, 243, 0.35);
+              z-index: 1;
+            "
+          >
+            🔥 NUEVO
+          </div>
+          <div
+            style="
+              background: linear-gradient(135deg, #0d47a1, #1976d2, #42a5f5);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 100px;
+                height: 100px;
+                background: rgba(255, 255, 255, 0.12);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 52px;
+                  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+                  animation: gentleFloat 2.6s ease-in-out infinite;
+                "
+              >
+                🐦
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+                  "
+                >
+                  ¡Lanza y Derriba!
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.9);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  ¡Cerditos verdes vs tus personajes! 🐷💥
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div
+                  style="
+                    background: #e3f2fd;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #bbdefb;
+                  "
+                >
+                  <div style="font-size: 16px">🏹</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Lanza
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #e3f2fd;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #bbdefb;
+                  "
+                >
+                  <div style="font-size: 16px">💥</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Derriba
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #e3f2fd;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #bbdefb;
+                  "
+                >
+                  <div style="font-size: 16px">🐷</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    ¡Elimina!
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                Física real · Bloques que caen · ¡Como Angry Birds! 🎮
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #0d47a1, #2196f3);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(13, 71, 161, 0.4);
+                white-space: nowrap;
+              "
+            >
+              ¡Jugar! →
+            </div>
+          </div>
+        </div>
+        <!-- JUEGO 8: Kira en el Espacio 🚀 -->
+        <div
+          onclick="abrirJuego('nave')"
+          style="
+            margin-top: 12px;
+            margin-bottom: 8px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid #e9d5ff;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              background: linear-gradient(135deg, #1e0050, #4c1d95, #7c3aed);
+              padding: 18px 18px 14px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                inset: 0;
+                background-image: radial-gradient(
+                  circle,
+                  rgba(255, 255, 255, 0.08) 1px,
+                  transparent 1px
+                );
+                background-size: 18px 18px;
+                pointer-events: none;
+              "
+            ></div>
+            <div
+              style="
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 100px;
+                height: 100px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 52px;
+                  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+                  animation: gentleFloat 2.4s ease-in-out infinite;
+                "
+              >
+                🚀
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 22px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+                  "
+                >
+                  Kira en el Espacio
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(220, 180, 255, 0.9);
+                    font-weight: 700;
+                    margin-top: 2px;
+                  "
+                >
+                  ¡Vuela, recoge estrellas y llega al planeta! 🌌
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div
+                  style="
+                    background: #f5f3ff;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #e9d5ff;
+                  "
+                >
+                  <div style="font-size: 16px">⭐</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Monedas
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #f5f3ff;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #e9d5ff;
+                  "
+                >
+                  <div style="font-size: 16px">🪨</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Evita
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #f5f3ff;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #e9d5ff;
+                  "
+                >
+                  <div style="font-size: 16px">🪐</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    ¡Llega!
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                3 dificultades · OVNIs · Láseres · ¡Escudo! 🛡️
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #4c1d95, #7c3aed);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 14px rgba(124, 58, 237, 0.45);
+                white-space: nowrap;
+              "
+            >
+              ¡Volar! →
+            </div>
+          </div>
+        </div>
+        <!-- JUEGO 9: Historias de Kira 📖 RPG -->
+        <div
+          onclick="abrirJuego('historias')"
+          style="
+            margin-top: 12px;
+            margin-bottom: 8px;
+            background: #fff;
+            border-radius: 22px;
+            padding: 0;
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12);
+            border: 3px solid #fde68a;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+          "
+          ontouchstart="this.style.transform='scale(0.97)'"
+          ontouchend="this.style.transform='scale(1)'"
+        >
+          <div
+            style="
+              position: absolute;
+              top: -1px;
+              left: 50%;
+              transform: translateX(-50%);
+              background: linear-gradient(135deg, #ffd700, #ff9500);
+              border-radius: 0 0 16px 16px;
+              padding: 4px 18px;
+              font-family: 'Fredoka One', cursive;
+              font-size: 11px;
+              color: #fff;
+              box-shadow: 0 2px 10px rgba(255, 149, 0, 0.4);
+              z-index: 1;
+              white-space: nowrap;
+            "
+          >
+            ✨ ESPECIAL · RPG INTERACTIVO
+          </div>
+          <div
+            style="
+              background: linear-gradient(
+                135deg,
+                #1a0050,
+                #4a0090,
+                #7c3aed,
+                #c084fc
+              );
+              padding: 22px 18px 16px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                inset: 0;
+                background-image: radial-gradient(
+                  circle,
+                  rgba(255, 255, 255, 0.07) 1px,
+                  transparent 1px
+                );
+                background-size: 14px 14px;
+                pointer-events: none;
+              "
+            ></div>
+            <div
+              style="
+                position: absolute;
+                top: -30px;
+                right: -30px;
+                width: 130px;
+                height: 130px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 50%;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  font-size: 56px;
+                  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.4));
+                  animation: gentleFloat 2.8s ease-in-out infinite;
+                "
+              >
+                📖
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 24px;
+                    color: #fff;
+                    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+                  "
+                >
+                  Historias de Kira
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: rgba(255, 230, 120, 0.95);
+                    font-weight: 700;
+                    margin-top: 3px;
+                  "
+                >
+                  ¡Elige tu compañero y vive la aventura! 🌟
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 18px 14px;
+              background: linear-gradient(180deg, #fdf4ff, #fff);
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <div style="flex: 1">
+              <div
+                style="
+                  display: flex;
+                  gap: 6px;
+                  margin-bottom: 8px;
+                  flex-wrap: wrap;
+                "
+              >
+                <div
+                  style="
+                    background: #f5f3ff;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #e9d5ff;
+                  "
+                >
+                  <div style="font-size: 16px">🐶</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Bluey
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #fef9ee;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fde68a;
+                  "
+                >
+                  <div style="font-size: 16px">🐷</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Peppa
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #fff0f0;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fecaca;
+                  "
+                >
+                  <div style="font-size: 16px">🐭</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    Mickey
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: #fff0f9;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border: 2px solid #fbcfe8;
+                  "
+                >
+                  <div style="font-size: 16px">😺</div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9ca3af"
+                  >
+                    H.Kitty
+                  </div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-weight: 700">
+                4 historias · Elecciones que cambian el cuento ✨
+              </div>
+            </div>
+            <div
+              style="
+                background: linear-gradient(135deg, #4a0090, #7c3aed);
+                border-radius: 16px;
+                padding: 10px 16px;
+                font-family: 'Fredoka One', cursive;
+                font-size: 15px;
+                color: #fff;
+                box-shadow: 0 4px 16px rgba(124, 58, 237, 0.5);
+                white-space: nowrap;
+              "
+            >
+              ¡Jugar! →
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats modal -->
+    <div
+      id="stats-overlay"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 250;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      "
+      onclick="if(event.target===this)cerrarStats()"
+    >
+      <div
+        id="stats-box"
+        style="
+          background: #fff;
+          border-radius: 28px;
+          max-width: 380px;
+          width: 100%;
+          overflow: hidden;
+          animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        "
+      >
+        <!-- Header con personaje -->
+        <div
+          id="stats-header"
+          style="
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            padding: 24px 20px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+          "
+        >
+          <div
+            style="
+              position: absolute;
+              top: -20px;
+              right: -20px;
+              width: 100px;
+              height: 100px;
+              background: rgba(255, 255, 255, 0.15);
+              border-radius: 50%;
+            "
+          ></div>
+          <img
+            id="stats-img"
+            src="/niveles/1.png"
+            onerror="this.style.display='none'"
+            style="
+              width: 120px;
+              height: 120px;
+              object-fit: contain;
+              margin: 0 auto 8px;
+              display: block;
+              filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.3));
+              animation: gentleFloat 3s ease-in-out infinite;
+              position: relative;
+              z-index: 1;
+            "
+          />
+          <div
+            id="stats-nombre"
+            style="
+              font-family: 'Fredoka One', cursive;
+              font-size: 22px;
+              color: #fff;
+              text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+              position: relative;
+              z-index: 1;
+            "
+          >
+            Guerrera Estrella
+          </div>
+          <div
+            id="stats-nivel-num"
+            style="
+              font-size: 12px;
+              font-weight: 800;
+              color: rgba(255, 255, 255, 0.8);
+              margin-top: 2px;
+              position: relative;
+              z-index: 1;
+            "
+          >
+            Nivel 2
+          </div>
+        </div>
+        <!-- Stats bars -->
+        <div style="padding: 20px 24px 24px">
+          <div
+            style="
+              font-family: 'Fredoka One', cursive;
+              font-size: 16px;
+              color: #1f2937;
+              margin-bottom: 14px;
+              text-align: center;
+            "
+          >
+            Habilidades de Kira
+          </div>
+          <div id="stats-bars"></div>
+          <div
+            id="stats-next"
+            style="
+              text-align: center;
+              margin-top: 16px;
+              font-size: 11px;
+              font-weight: 700;
+              color: #aaa;
+            "
+          ></div>
+          <button
+            onclick="cerrarStats()"
+            style="
+              width: 100%;
+              padding: 14px;
+              border-radius: 18px;
+              border: none;
+              background: linear-gradient(135deg, #ffd700, #ff8c00);
+              color: #fff;
+              font-family: 'Fredoka One', cursive;
+              font-size: 17px;
+              cursor: pointer;
+              margin-top: 14px;
+              box-shadow: 0 4px 16px rgba(255, 200, 0, 0.3);
+            "
+          >
+            ¡Genial! ✨
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cel-overlay" id="cel">
+      <img class="cel-char" id="cel-char" src="" alt="" />
+      <div class="cel-bubble" id="cel-bubble"></div>
+      <div class="cel-title" id="cel-title">¡KIRA LO HA CONSEGUIDO!</div>
+      <div class="cel-stars-big" id="cel-stars">+1 ⭐</div>
+      <button class="cel-btn" onclick="cerrarCel()">¡Genial! 🎉</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+      firebase.initializeApp({
+        apiKey: "AIzaSyAXBTPY--5N2zVcRnBP4CMKCimdlauSBtA",
+        authDomain: "elvideojuegodekira.firebaseapp.com",
+        databaseURL:
+          "https://elvideojuegodekira-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "elvideojuegodekira",
+        storageBucket: "elvideojuegodekira.firebasestorage.app",
+        messagingSenderId: "964090092828",
+        appId: "1:964090092828:web:a9834b910e2a6d3a1f6ed9",
+      });
+      var DB = firebase.database().ref("kiraGame/state"),
+        OBJETIVO = 10;
+
+      var CATS_DEFAULT = [
+        {
+          id: "manana",
+          titulo: "Mañana",
+          icon: "🌅",
+          color: "#FEF3C7",
+          misiones: [
+            { n: "Levantarse feliz", icon: "😊", p: 1 },
+            { n: "Vestirse solita", icon: "👗", p: 1 },
+            { n: "Desayuno de campeona", icon: "🥞", p: 1 },
+            { n: "Caminando al cole", icon: "🏫", p: 1, finde: false },
+          ],
+        },
+        {
+          id: "tarde",
+          titulo: "Tarde",
+          icon: "☀️",
+          color: "#DCFCE7",
+          misiones: [
+            { n: "Salir contenta del cole", icon: "😊", p: 1, finde: false },
+            { n: "Merienda rica", icon: "🍎", p: 1 },
+            { n: "Paseo con Eevee", icon: "🐾", p: 1 },
+            { n: "Recoger los juguetes", icon: "🧸", p: 1 },
+            { n: "Comer bien y disfrutar", icon: "🍽️", p: 1, finde: true },
+          ],
+        },
+        {
+          id: "noche",
+          titulo: "Noche",
+          icon: "🌙",
+          color: "#EDE9FE",
+          misiones: [
+            { n: "Cenar bien", icon: "🍽️", p: 1 },
+            { n: "Dientes brillantes", icon: "🦷", p: 1 },
+            { n: "Ponerse el pijama", icon: "👚", p: 1 },
+            { n: "Dormir a la primera", icon: "😴", p: 1 },
+          ],
+        },
+        {
+          id: "extra",
+          titulo: "Misiones Extra",
+          icon: "🚀",
+          color: "#FEE2E2",
+          misiones: [
+            { n: "Ayudar a cocinar", icon: "🍳", p: 2 },
+            { n: "Preparar la mesa", icon: "🍽️", p: 2 },
+            { n: "Ayudar a recoger", icon: "🧹", p: 2 },
+            { n: "Hacer gimnasia", icon: "🤸", p: 2 },
+            { n: "Baño divertido", icon: "🛁", p: 2 },
+            { n: "Pedir perdón", icon: "💛", p: 2 },
+            { n: "Compartir con alguien", icon: "🤝", p: 2 },
+            { n: "Día sin berrinches", icon: "😊", p: 2 },
+          ],
+        },
+      ];
+      var CATS = JSON.parse(JSON.stringify(CATS_DEFAULT));
+      var PREMIOS_DIA_D = [
+        { nombre: "Chuche especial", emoji: "🍬", coste: 8 },
+        { nombre: "Baile en el salon", emoji: "💃", coste: 12 },
+        { nombre: "Chocolate", emoji: "🍫", coste: 16 },
+      ];
+      var PREMIOS_SEM_D = [
+        { nombre: "Pelicula en familia con palomitas", emoji: "🎬", coste: 45 },
+        { nombre: "Revista en el estanco", emoji: "📰", coste: 55 },
+        { nombre: "Ir a los saltos", emoji: "🤸", coste: 65 },
+        { nombre: "Ir a las bolas", emoji: "🎮", coste: 80 },
+      ];
+      var PREMIOS_MES_D = [
+        { nombre: "Excursion en familia", emoji: "🏕️", coste: 200 },
+        {
+          nombre: "Ir a los bolos + bolas + recreativo",
+          emoji: "🎳",
+          coste: 250,
+        },
+        { nombre: "Ir al cine", emoji: "🎬", coste: 350 },
+        { nombre: "Juguete hasta 15 euros", emoji: "🧸", coste: 400 },
+        { nombre: "Juguete especial hasta 30 euros", emoji: "🎠", coste: 500 },
+      ];
+      var PREMIOS_DIA = PREMIOS_DIA_D.slice(),
+        PREMIOS_SEMANA = PREMIOS_SEM_D.slice(),
+        PREMIOS_MES = PREMIOS_MES_D.slice();
+
+      var CHARS = [
+        {
+          id: "bluey",
+          nombre: "Bluey",
+          frases: [
+            "Eso es lo MAS GENIAL Kira!",
+            "Wooow! Sabia que podias!",
+            "EPICO!",
+            "Eres la mas valiente!",
+          ],
+        },
+        {
+          id: "bingo",
+          nombre: "Bingo",
+          frases: [
+            "Kira eso ha sido increible!",
+            "Ooooh eres la mejor!",
+            "Que bien lo has hecho!",
+          ],
+        },
+        {
+          id: "hellokitty",
+          nombre: "Hello Kitty",
+          frases: [
+            "Eres tan maravillosa Kira!",
+            "Me has llenado el corazon!",
+            "La nina mas especial!",
+          ],
+        },
+        {
+          id: "kuromi",
+          nombre: "Kuromi",
+          frases: [
+            "Hmph... eso estuvo MUY bien!",
+            "De hecho esta GENIAL!",
+            "Me quito el sombrero!",
+          ],
+        },
+        {
+          id: "mickey-mouse",
+          nombre: "Mickey",
+          frases: [
+            "Ha ha! Eso ha sido sensacional!",
+            "Bien bien BIEN!",
+            "Incluso Goofy estaria orgulloso!",
+          ],
+        },
+        {
+          id: "minni",
+          nombre: "Minnie",
+          frases: [
+            "Oh Kira absolutamente adorable!",
+            "Yuju! Mereces el lazo mas bonito!",
+            "Me has hecho tan feliz!",
+          ],
+        },
+        {
+          id: "asterix",
+          nombre: "Asterix",
+          frases: [
+            "Por Tutatis! Increible!",
+            "Obelix y yo muy orgullosos!",
+            "Mas valiente que todos los galos!",
+          ],
+        },
+        {
+          id: "pepapig",
+          nombre: "Pepa Pig",
+          frases: [
+            "Oink oink! Fantastico!",
+            "George y yo te aplaudimos!",
+            "Eres mi amiga favorita!",
+          ],
+        },
+        {
+          id: "diana",
+          nombre: "Diana",
+          frases: [
+            "Hola Kira! INCREIBLE!",
+            "Eres mi amiga favorita!",
+            "Baile de celebracion!",
+          ],
+        },
+        {
+          id: "bella",
+          nombre: "Bella",
+          frases: [
+            "Oh Kira, eres tan valiente y especial!",
+            "La biblioteca mas grande del mundo para ti!",
+            "Has conseguido algo maravilloso!",
+            "Eres tan inteligente y bonita!",
+          ],
+        },
+        {
+          id: "arancha",
+          nombre: "Arancha",
+          frases: [
+            "Baaaah! Juegooo! Juegooo!",
+            "Quiero mas!! Quiero mas!!",
+            "Ehhh! Ehhh! Muy biennn!",
+            "Jajaja! Eres muy graciosa Kira!",
+          ],
+        },
+      ];
+
+      var estado = {
+        total: 0,
+        semana: 0,
+        hoy: 0,
+        fechaHoy: "",
+        historial: [],
+        hechas: [],
+        historialDias: {},
+      };
+      var extraAbierto = false,
+        pendingClose = null;
+
+      function hoyStr() {
+        var d = new Date();
+        return (
+          d.getFullYear() +
+          "-" +
+          String(d.getMonth() + 1).padStart(2, "0") +
+          "-" +
+          String(d.getDate()).padStart(2, "0")
+        );
+      }
+      function mk(tag, css, txt) {
+        var el = document.createElement(tag || "div");
+        if (css) el.style.cssText = css;
+        if (txt !== undefined) el.textContent = txt;
+        return el;
+      }
+
+      var audioCtx = null;
+      function playSound(type) {
+        try {
+          if (!audioCtx)
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          var ctx = audioCtx,
+            osc = ctx.createOscillator(),
+            gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          if (type === "star") {
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(880, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(
+              1320,
+              ctx.currentTime + 0.1
+            );
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.3);
+          } else if (type === "premio") {
+            osc.type = "square";
+            osc.frequency.setValueAtTime(523, ctx.currentTime);
+            osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+            osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+            osc.frequency.setValueAtTime(1047, ctx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.5);
+          } else if (type === "undo") {
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(600, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(
+              350,
+              ctx.currentTime + 0.15
+            );
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.2);
+          }
+        } catch (e) {}
+      }
+
+      function lanzarConfeti() {
+        var c = ["#FF0000", "#FF6B6B", "#FFD700", "#FF4444", "#fff", "#FFAAAA"];
+        for (var i = 0; i < 40; i++) {
+          (function (d) {
+            setTimeout(function () {
+              var el = document.createElement("div");
+              el.className = "conf";
+              var sz = 6 + Math.random() * 10;
+              el.style.left = Math.random() * 100 + "vw";
+              el.style.top = "-20px";
+              el.style.width = sz + "px";
+              el.style.height = sz + "px";
+              el.style.background = c[Math.floor(Math.random() * c.length)];
+              el.style.animationDuration = 1.2 + Math.random() + "s";
+              el.style.borderRadius = Math.random() > 0.5 ? "50%" : "3px";
+              document.body.appendChild(el);
+              setTimeout(function () {
+                el.remove();
+              }, 3000);
+            }, d);
+          })(i * 20);
+        }
+      }
+
+      var NIVELES = [
+        { n: "Aprendiz Magica", emoji: "⭐", min: 0, img: "/niveles/1.png" },
+        { n: "Guerrera Estrella", emoji: "🌟", min: 50, img: "/niveles/2.png" },
+        {
+          n: "Aventurera Valiente",
+          emoji: "🗡️",
+          min: 120,
+          img: "/niveles/3.png",
+        },
+        {
+          n: "Princesa del Arco Iris",
+          emoji: "🌈",
+          min: 200,
+          img: "/niveles/4.png",
+        },
+        { n: "Hada Poderosa", emoji: "🧚", min: 350, img: "/niveles/5.png" },
+        { n: "Reina Unicornio", emoji: "🦄", min: 500, img: "/niveles/6.png" },
+        { n: "SUPER KIRA", emoji: "👑", min: 700, img: "/niveles/7.png" },
+      ];
+      function getNivel(p) {
+        for (var i = NIVELES.length - 1; i >= 0; i--) {
+          if (p >= NIVELES[i].min) return i;
+        }
+        return 0;
+      }
+
+      // Firebase sync — READ ONLY (no writes on day change, index handles that)
+      DB.on("value", function (snap) {
+        var d = snap.val();
+        if (d) {
+          estado = d;
+          if (!estado.historial) estado.historial = [];
+          if (!estado.hechas) estado.hechas = [];
+          if (!estado.historialDias) estado.historialDias = {};
+          if (!estado.hoy) estado.hoy = 0;
+          if (!estado.total) estado.total = 0;
+          if (!estado.semana) estado.semana = 0;
+          if (!estado.semanas) estado.semanas = [];
+          if (estado.objetivo) OBJETIVO = estado.objetivo;
+          // Custom from parents
+          if (estado.customCats && estado.customCats.length > 0)
+            CATS = JSON.parse(JSON.stringify(estado.customCats));
+          else CATS = JSON.parse(JSON.stringify(CATS_DEFAULT));
+          if (estado.customPremiosDia && estado.customPremiosDia.length > 0)
+            PREMIOS_DIA = estado.customPremiosDia.slice();
+          else PREMIOS_DIA = PREMIOS_DIA_D.slice();
+          if (
+            estado.customPremiosSemana &&
+            estado.customPremiosSemana.length > 0
+          )
+            PREMIOS_SEMANA = estado.customPremiosSemana.slice();
+          else PREMIOS_SEMANA = PREMIOS_SEM_D.slice();
+          if (estado.customPremiosMes && estado.customPremiosMes.length > 0)
+            PREMIOS_MES = estado.customPremiosMes.slice();
+          else PREMIOS_MES = PREMIOS_MES_D.slice();
+          // NO day change logic here — index.html is the owner of state transitions
+          // We just read whatever state is current
+        }
+        dibujar();
+      });
+
+      // guardarPremios() — solo escribe premiosRecogidos
+      function guardarPremios() {
+        if (estado.premiosRecogidos) {
+          DB.child("premiosRecogidos").set(estado.premiosRecogidos);
+        }
+      }
+
+      // guardarMision() — escribe solo los campos que toca marcar una misión, sin pisar el resto
+      function guardarMision() {
+        var updates = {};
+        updates.hechas = estado.hechas;
+        updates.hoy = estado.hoy;
+        updates.total = estado.total;
+        updates.semana = estado.semana;
+        updates.historialDias = estado.historialDias;
+        updates.historial = estado.historial;
+        if (estado.fechaHoy) updates.fechaHoy = estado.fechaHoy;
+        DB.update(updates);
+      }
+
+      var _marcarEnCurso = false;
+      var _justMarkedKey = null;
+      function marcarMision(key, mision) {
+        if (_marcarEnCurso) return;
+        _marcarEnCurso = true;
+        setTimeout(function () {
+          _marcarEnCurso = false;
+        }, 600);
+        if (!estado.hechas) estado.hechas = [];
+        var idx = estado.hechas.indexOf(key);
+
+        if (idx >= 0) {
+          // DESMARCAR — quitar estrella
+          estado.hechas.splice(idx, 1);
+          var pts = mision.p;
+          estado.total = Math.max(0, (estado.total || 0) - pts);
+          estado.semana = Math.max(0, (estado.semana || 0) - pts);
+          estado.hoy = Math.max(0, (estado.hoy || 0) - pts);
+          if (!estado.historialDias) estado.historialDias = {};
+          if (estado.fechaHoy)
+            estado.historialDias[estado.fechaHoy] = estado.hoy;
+          // Quitar última entrada del historial con este motivo
+          if (estado.historial && estado.historial.length > 0) {
+            var motivo = mision.icon + " " + mision.n;
+            for (var hi = estado.historial.length - 1; hi >= 0; hi--) {
+              if (estado.historial[hi].motivo === motivo) {
+                estado.historial.splice(hi, 1);
+                break;
+              }
+            }
+          }
+          playSound("undo");
+          guardarMision();
+          dibujar();
+        } else {
+          // MARCAR — dar estrella
+          estado.hechas.push(key);
+          var pts = mision.p;
+          estado.total = (estado.total || 0) + pts;
+          estado.semana = (estado.semana || 0) + pts;
+          estado.hoy = (estado.hoy || 0) + pts;
+          if (!estado.fechaHoy) estado.fechaHoy = hoyStr();
+          if (!estado.historialDias) estado.historialDias = {};
+          estado.historialDias[estado.fechaHoy] = estado.hoy;
+          if (!estado.historial) estado.historial = [];
+          var fecha = new Date().toLocaleDateString("es-ES", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+          });
+          var ch = CHARS[Math.floor(Math.random() * CHARS.length)];
+          estado.historial.push({
+            pts: pts,
+            motivo: mision.icon + " " + mision.n,
+            fecha: fecha,
+            char: ch.id,
+          });
+          if (estado.historial.length > 50)
+            estado.historial = estado.historial.slice(-50);
+          guardarMision();
+          _justMarkedKey = key;
+          dibujar();
+          setTimeout(function () {
+            _justMarkedKey = null;
+          }, 500);
+          mostrarCelebracion(pts, ch);
+        }
+      }
+
+      function goTab(id) {
+        document.getElementById("pg-mis").className =
+          id === "mis" ? "pg on" : "pg";
+        document.getElementById("pg-pre").className =
+          id === "pre" ? "pg on" : "pg";
+        document.getElementById("pg-jue").className =
+          id === "jue" ? "pg on" : "pg";
+        document.getElementById("tab-mis").className =
+          id === "mis" ? "nav-tab on" : "nav-tab";
+        document.getElementById("tab-pre").className =
+          id === "pre" ? "nav-tab on" : "nav-tab";
+        document.getElementById("tab-jue").className =
+          id === "jue" ? "nav-tab on" : "nav-tab";
+        if (id === "pre") dibujarPremios();
+        // Update hash without reloading
+        history.replaceState(null, "", "#" + id);
+      }
+
+      // Open correct tab on load based on hash
+      window.addEventListener("DOMContentLoaded", function () {
+        var hash = window.location.hash.replace("#", "");
+        if (hash === "jue" || hash === "juegos") goTab("jue");
+        else if (hash === "pre") goTab("pre");
+      });
+
+      function abrirJuego(id) {
+        var rutas = {
+          memoria: "juegos/memoria.html",
+          esconde: "juegos/esconde.html",
+          intruso: "juegos/intruso.html",
+          cuenta: "juegos/cuenta.html",
+          atrapalo: "juegos/atrapalo.html",
+          burbujas: "juegos/burbujas.html",
+          eevee: "juegos/eevee.html",
+          lanza: "juegos/lanza.html",
+          nave: "juegos/nave.html",
+          historias: "juegos/historias.html",
+        };
+        if (rutas[id]) window.location.href = rutas[id];
+      }
+
+      function dibujar() {
+        var hd = estado.hoy || 0,
+          pct = Math.min(100, Math.round((hd / OBJETIVO) * 100));
+        document.getElementById("hero-num").textContent = hd;
+        document.getElementById("hero-bar").style.width =
+          Math.max(pct, 4) + "%";
+        document.getElementById("hero-obj").textContent =
+          hd + " de " + OBJETIVO;
+        document.getElementById("hero-sem").textContent = estado.semana || 0;
+        document.getElementById("hero-total").textContent = estado.total || 0;
+
+        // Saludo por hora del día + personaje aleatorio
+        dibujarSaludo();
+
+        // Mensaje motivacional
+        dibujarMotivacional(hd);
+
+        // Nivel
+        var t = estado.total || 0,
+          li = getNivel(t),
+          lv = NIVELES[li];
+        var sig = NIVELES[Math.min(li + 1, NIVELES.length - 1)];
+        var esFinal = li === NIVELES.length - 1;
+        var lp = esFinal
+          ? 100
+          : Math.min(
+              100,
+              Math.round(((t - lv.min) / (sig.min - lv.min)) * 100)
+            );
+        document.getElementById("niv-img").src = lv.img;
+        document.getElementById("niv-name").textContent = lv.emoji + " " + lv.n;
+        document.getElementById("niv-bar").style.width = Math.max(lp, 4) + "%";
+        document.getElementById("niv-hint").textContent = esFinal
+          ? "¡Nivel máximo! 👑"
+          : t - lv.min + "/" + (sig.min - lv.min) + " para " + sig.n;
+
+        // Streak
+        var streak = calcularStreak(),
+          sc = document.getElementById("streak-container");
+        if (streak >= 2) {
+          sc.style.display = "";
+          document.getElementById("streak-text").textContent =
+            streak + " días seguidos!";
+        } else {
+          sc.style.display = "none";
+        }
+
+        // Badge de premios disponibles
+        actualizarBadgePremios(hd);
+
+        dibujarMisiones();
+        dibujarPremios();
+      }
+
+      function actualizarBadgePremios(hd) {
+        var semana = estado.semana || 0,
+          mes = calcularMes();
+        var count = 0;
+        for (var i = 0; i < PREMIOS_DIA.length; i++) {
+          if (
+            hd >= PREMIOS_DIA[i].coste &&
+            !premioRecogido(PREMIOS_DIA[i].nombre, "dia")
+          )
+            count++;
+        }
+        for (var i = 0; i < PREMIOS_SEMANA.length; i++) {
+          if (
+            semana >= PREMIOS_SEMANA[i].coste &&
+            !premioRecogido(PREMIOS_SEMANA[i].nombre, "semana")
+          )
+            count++;
+        }
+        for (var i = 0; i < PREMIOS_MES.length; i++) {
+          if (
+            mes >= PREMIOS_MES[i].coste &&
+            !premioRecogido(PREMIOS_MES[i].nombre, "mes")
+          )
+            count++;
+        }
+        var badge = document.getElementById("premio-badge-tab");
+        if (badge) {
+          if (count > 0) {
+            badge.style.display = "";
+            badge.textContent = count;
+          } else {
+            badge.style.display = "none";
+          }
+        }
+      }
+
+      // ── Saludo personalizado ──
+      var _saludoCharIdx = -1;
+      function dibujarSaludo() {
+        var h = new Date().getHours();
+        var saludo, sub;
+        if (h >= 6 && h < 12) {
+          saludo = "¡Buenos días Kira! ☀️";
+          sub = "¡A empezar el día con energía!";
+        } else if (h >= 12 && h < 15) {
+          saludo = "¡Buenas tardes Kira! 🌤️";
+          sub = "¿Qué tal ha ido la mañana?";
+        } else if (h >= 15 && h < 20) {
+          saludo = "¡Hola Kira! 🌈";
+          sub = "¡La tarde es tuya!";
+        } else if (h >= 20 || h < 6) {
+          saludo = "¡Buenas noches Kira! 🌙";
+          sub = "¡Hora de repasar el día!";
+        }
+        // Personaje aleatorio (solo cambia al cargar, no en cada dibujar)
+        if (_saludoCharIdx < 0)
+          _saludoCharIdx = Math.floor(Math.random() * CHARS.length);
+        var ch = CHARS[_saludoCharIdx];
+        document.getElementById("saludo-text").textContent = saludo;
+        document.getElementById("saludo-sub").textContent = sub;
+        document.getElementById("saludo-char").src =
+          "/personajes/" + ch.id + ".png";
+      }
+
+      // ── Mensaje motivacional ──
+      var _motivAction = null; // "premios" or null
+      function dibujarMotivacional(hd) {
+        var cont = document.getElementById("motiv-container");
+        var txtEl = document.getElementById("motiv-text");
+        var emoEl = document.getElementById("motiv-emoji");
+        var arrowEl = document.getElementById("motiv-arrow");
+        if (!cont) return;
+
+        var msg = "",
+          emoji = "";
+        _motivAction = null;
+
+        // Prioridad 1: premio del día casi listo
+        for (var i = 0; i < PREMIOS_DIA.length; i++) {
+          var p = PREMIOS_DIA[i];
+          var falta = p.coste - hd;
+          if (falta > 0 && falta <= 3 && !premioRecogido(p.nombre, "dia")) {
+            msg =
+              "¡Solo " +
+              falta +
+              " estrella" +
+              (falta > 1 ? "s" : "") +
+              " más para " +
+              p.emoji +
+              " " +
+              p.nombre +
+              "!";
+            emoji = "🎁";
+            _motivAction = "premios";
+            break;
+          }
+        }
+
+        // Prioridad 2: premio disponible sin recoger
+        if (!msg) {
+          for (var i = 0; i < PREMIOS_DIA.length; i++) {
+            if (
+              hd >= PREMIOS_DIA[i].coste &&
+              !premioRecogido(PREMIOS_DIA[i].nombre, "dia")
+            ) {
+              msg = "¡Tienes un premio esperándote! Toca aquí 🎁";
+              emoji = "✨";
+              _motivAction = "premios";
+              break;
+            }
+          }
+        }
+
+        // Prioridad 3: objetivo del día
+        if (!msg) {
+          if (hd > 0 && hd < OBJETIVO) {
+            var faltan = OBJETIVO - hd;
+            msg =
+              "¡Te faltan " +
+              faltan +
+              " estrella" +
+              (faltan > 1 ? "s" : "") +
+              " para el objetivo del día!";
+            emoji = "💪";
+          } else if (hd >= OBJETIVO) {
+            msg = "¡Objetivo del día conseguido! ¡Eres genial!";
+            emoji = "🏆";
+          }
+        }
+
+        if (msg) {
+          cont.style.display = "";
+          txtEl.textContent = msg;
+          emoEl.textContent = emoji;
+          arrowEl.style.display = _motivAction ? "block" : "none";
+        } else {
+          cont.style.display = "none";
+        }
+      }
+
+      function motivClick() {
+        if (_motivAction === "premios") goTab("pre");
+      }
+
+      function dibujarMisiones() {
+        var board = document.getElementById("board");
+        board.innerHTML = "";
+        var hechas = estado.hechas || [];
+        // Separar: las 3 principales (manana, tarde, noche) se muestran siempre
+        // Todo lo demás (extra, custom_*) se colapsa
+        var principales = ["manana", "tarde", "noche"];
+        var normales = [],
+          extras = [];
+        for (var c = 0; c < CATS.length; c++) {
+          if (principales.indexOf(CATS[c].id) >= 0) normales.push(CATS[c]);
+          else extras.push(CATS[c]);
+        }
+        for (var c = 0; c < normales.length; c++)
+          dibujarCat(board, normales[c], hechas, false);
+        // Extras colapsables
+        if (extras.length > 0) {
+          var finde = esFinde();
+          var totalExtCount = 0,
+            totalExtDone = 0;
+          for (var e = 0; e < extras.length; e++) {
+            for (var x = 0; x < extras[e].misiones.length; x++) {
+              var em = extras[e].misiones[x];
+              if (em.finde === true && !finde) continue;
+              if (em.finde === false && finde) continue;
+              totalExtCount++;
+              if (hechas.indexOf(extras[e].id + "_" + x) >= 0) totalExtDone++;
+            }
+          }
+          var tog = mk("div");
+          tog.className = "extra-toggle" + (extraAbierto ? " open" : "");
+          tog.innerHTML =
+            '<span>🚀</span> Misiones Extra <span style="font-size:12px;opacity:0.7">(' +
+            totalExtDone +
+            "/" +
+            totalExtCount +
+            ')</span> <span class="extra-arrow">▼</span>';
+          tog.onclick = function () {
+            extraAbierto = !extraAbierto;
+            dibujarMisiones();
+          };
+          board.appendChild(tog);
+          if (extraAbierto) {
+            for (var e = 0; e < extras.length; e++) {
+              // Si hay varias categorías extra, mostrar header de cada una
+              dibujarCat(board, extras[e], hechas, extras.length === 1);
+            }
+          }
+        }
+
+        // Mini calendario semanal
+        dibujarMiniCalendario(board);
+      }
+
+      function dibujarMiniCalendario(container) {
+        var dias = ["L", "M", "X", "J", "V", "S", "D"];
+        var diasNombres = [
+          "Lunes",
+          "Martes",
+          "Miércoles",
+          "Jueves",
+          "Viernes",
+          "Sábado",
+          "Domingo",
+        ];
+        var hoyReal = new Date();
+        var hoyKey = hoyStr();
+        var dow = hoyReal.getDay();
+        var lunesOffset = dow === 0 ? -6 : 1 - dow;
+        var lunes = new Date(hoyReal);
+        lunes.setDate(hoyReal.getDate() + lunesOffset);
+
+        var wrap = mk(
+          "div",
+          "background:#fff;border-radius:20px;padding:16px;margin-top:14px;box-shadow:0 2px 14px rgba(0,0,0,0.07)"
+        );
+        var tit = mk(
+          "div",
+          "font-family:'Fredoka One',cursive;font-size:16px;color:#1F2937;margin-bottom:10px;text-align:center",
+          "📅 Mi semana"
+        );
+        wrap.appendChild(tit);
+
+        var grid = mk(
+          "div",
+          "display:grid;grid-template-columns:repeat(7,1fr);gap:6px"
+        );
+        var maxPts = 0,
+          mejorIdx = -1;
+        var semDatos = [];
+
+        for (var d = 0; d < 7; d++) {
+          var fecha = new Date(lunes);
+          fecha.setDate(lunes.getDate() + d);
+          var dd = String(fecha.getDate()).padStart(2, "0");
+          var mm = String(fecha.getMonth() + 1).padStart(2, "0");
+          var key = fecha.getFullYear() + "-" + mm + "-" + dd;
+          var pts = (estado.historialDias || {})[key] || 0;
+          var esHoy = key === hoyKey;
+          if (esHoy) pts = estado.hoy || 0;
+          var esFuturo = fecha > hoyReal && !esHoy;
+          semDatos.push({
+            dia: dias[d],
+            pts: pts,
+            esHoy: esHoy,
+            esFuturo: esFuturo,
+            num: fecha.getDate(),
+          });
+          if (pts > maxPts) {
+            maxPts = pts;
+            mejorIdx = d;
+          }
+        }
+
+        for (var d = 0; d < 7; d++) {
+          var sd = semDatos[d];
+          var cell = mk(
+            "div",
+            "text-align:center;padding:8px 4px;border-radius:14px"
+          );
+          if (sd.esHoy) {
+            cell.style.background = "linear-gradient(135deg,#FFF5F5,#FEE2E2)";
+            cell.style.border = "2px solid #FF0000";
+          } else if (d === mejorIdx && maxPts > 0 && !sd.esFuturo) {
+            cell.style.background = "linear-gradient(135deg,#FFFBEB,#FEF3C7)";
+            cell.style.border = "2px solid #F59E0B";
+          } else if (sd.esFuturo) {
+            cell.style.background = "#F9FAFB";
+            cell.style.opacity = "0.5";
+          } else {
+            cell.style.background = "#F9FAFB";
+          }
+
+          var lbl = mk(
+            "div",
+            "font-size:9px;font-weight:800;color:" +
+              (sd.esHoy
+                ? "#FF0000"
+                : d === mejorIdx && maxPts > 0
+                ? "#D97706"
+                : "#aaa") +
+              ";margin-bottom:3px",
+            sd.dia
+          );
+          var num = mk(
+            "div",
+            "font-family:'Fredoka One',cursive;font-size:18px;line-height:1;color:" +
+              (sd.esHoy
+                ? "#FF0000"
+                : d === mejorIdx && maxPts > 0
+                ? "#D97706"
+                : "#1F2937")
+          );
+          num.textContent = sd.esFuturo
+            ? "—"
+            : sd.pts > 0
+            ? sd.pts
+            : sd.esHoy
+            ? "0"
+            : "·";
+          var ico = mk("div", "font-size:12px;margin-top:2px");
+          ico.textContent = sd.esFuturo ? "" : sd.pts > 0 ? "⭐" : "";
+          cell.appendChild(lbl);
+          cell.appendChild(num);
+          cell.appendChild(ico);
+          grid.appendChild(cell);
+        }
+        wrap.appendChild(grid);
+
+        if (mejorIdx >= 0 && maxPts > 0) {
+          var best = mk(
+            "div",
+            "text-align:center;margin-top:8px;font-size:11px;font-weight:800;color:#D97706",
+            "✨ Mejor día: " +
+              diasNombres[mejorIdx] +
+              " con " +
+              maxPts +
+              " estrellas!"
+          );
+          wrap.appendChild(best);
+        } else {
+          // No hay datos aún — mostrar mensaje de ánimo
+          var first = mk(
+            "div",
+            "text-align:center;margin-top:8px;font-size:11px;font-weight:700;color:#D1D5DB;line-height:1.4",
+            "🌟 ¡Empieza a ganar estrellas y verás tu semana aquí!"
+          );
+          wrap.appendChild(first);
+        }
+        container.appendChild(wrap);
+      }
+
+      function esFinde() {
+        var d = new Date().getDay();
+        return d === 0 || d === 6;
+      }
+
+      function dibujarCat(container, cat, hechas, skipHeader) {
+        var finde = esFinde();
+        // Filter missions by weekend flag
+        var misionesVisibles = [];
+        var indicesVisibles = [];
+        for (var x = 0; x < cat.misiones.length; x++) {
+          var m = cat.misiones[x];
+          // finde property: true=solo finde, false=solo entre semana, undefined=siempre
+          if (m.finde === true && !finde) continue;
+          if (m.finde === false && finde) continue;
+          misionesVisibles.push(m);
+          indicesVisibles.push(x);
+        }
+
+        var count = 0,
+          total = misionesVisibles.length;
+        for (var x = 0; x < indicesVisibles.length; x++) {
+          if (hechas.indexOf(cat.id + "_" + indicesVisibles[x]) >= 0) count++;
+        }
+
+        if (!skipHeader && total > 0) {
+          var sh = mk("div");
+          sh.className = "sec-header";
+          var si = mk("span");
+          si.className = "sec-ico";
+          si.textContent = cat.icon;
+          var st = mk("span");
+          st.className = "sec-tit";
+          st.textContent = cat.titulo;
+          var sc = mk("span");
+          sc.className = "sec-count";
+          sc.textContent = count + "/" + total;
+          if (count === total) sc.style.background = "#10B981";
+          sh.appendChild(si);
+          sh.appendChild(st);
+          sh.appendChild(sc);
+          container.appendChild(sh);
+        }
+        if (total === 0) return;
+
+        var grid = mk("div");
+        grid.className = "mis-grid";
+        for (var vi = 0; vi < misionesVisibles.length; vi++) {
+          var m = misionesVisibles[vi],
+            origIdx = indicesVisibles[vi];
+          var key = cat.id + "_" + origIdx,
+            hecha = hechas.indexOf(key) >= 0;
+          var card = mk("div");
+          card.className =
+            "mis-card" +
+            (hecha ? " hecha" : "") +
+            (hecha && _justMarkedKey === key ? " just-marked" : "");
+          var emoji = mk("div");
+          emoji.className = "mis-emoji";
+          emoji.textContent = m.icon;
+          var name = mk("div");
+          name.className = "mis-name";
+          name.textContent = m.n;
+          card.appendChild(emoji);
+          card.appendChild(name);
+          if (hecha) {
+            var star = mk("div");
+            star.className = "mis-star";
+            var simg = document.createElement("img");
+            simg.src = "/personajes/estrella_kira.png";
+            simg.style.cssText = "width:30px;height:30px;object-fit:contain";
+            simg.onerror = function () {
+              this.outerHTML = "⭐";
+            };
+            star.appendChild(simg);
+            card.appendChild(star);
+          }
+          card.style.cursor = "pointer";
+          (function (k, mis) {
+            card.onclick = function () {
+              marcarMision(k, mis);
+            };
+          })(key, m);
+          grid.appendChild(card);
+        }
+        container.appendChild(grid);
+      }
+
+      // ── Premios ──
+      function calcularMes() {
+        var dias = estado.historialDias || {},
+          a = new Date(),
+          mes = a.getMonth(),
+          anio = a.getFullYear(),
+          s = 0;
+        Object.keys(dias).forEach(function (k) {
+          var p = k.split("-");
+          if (
+            p.length === 3 &&
+            parseInt(p[0]) === anio &&
+            parseInt(p[1]) === mes + 1
+          )
+            s += dias[k] || 0;
+        });
+        var h = estado.fechaHoy || "",
+          ph = h.split("-");
+        if (
+          ph.length === 3 &&
+          parseInt(ph[0]) === anio &&
+          parseInt(ph[1]) === mes + 1
+        ) {
+          var yc = dias[h] || 0,
+            hr = estado.hoy || 0;
+          if (hr > yc) s += hr - yc;
+        }
+        return s;
+      }
+
+      function premioRecogido(nombre, tier) {
+        if (!estado.premiosRecogidos) return false;
+        if (!estado.premiosRecogidos[tier]) return false;
+        var f = estado.premiosRecogidos[tier][nombre];
+        if (!f) return false;
+        if (tier === "dia") return f === hoyStr();
+        if (tier === "semana") {
+          var h = new Date(),
+            dow = h.getDay(),
+            off = dow === 0 ? -6 : 1 - dow,
+            lun = new Date(h);
+          lun.setDate(h.getDate() + off);
+          var lk =
+            lun.getFullYear() +
+            "-" +
+            String(lun.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(lun.getDate()).padStart(2, "0");
+          return f >= lk;
+        }
+        if (tier === "mes") {
+          var a = new Date(),
+            mp =
+              a.getFullYear() + "-" + String(a.getMonth() + 1).padStart(2, "0");
+          return f.indexOf(mp) === 0;
+        }
+        return false;
+      }
+
+      function dibujarPremios() {
+        var lista = document.getElementById("premios-list");
+        if (!lista) return;
+        lista.innerHTML = "";
+        var hoy = estado.hoy || 0,
+          semana = estado.semana || 0,
+          mes = calcularMes();
+        var intro = mk(
+          "div",
+          "background:linear-gradient(135deg,#FFF9E6,#FEF3C7);border-radius:16px;padding:12px 16px;margin-bottom:14px;border:1.5px solid #FDE68A;font-size:12px;font-weight:700;color:#92400E;line-height:1.6"
+        );
+        intro.innerHTML =
+          "🌅 <b>Del Día</b> → estrellas de hoy<br>📅 <b>De la Semana</b> → total semanal<br>🏆 <b>Del Mes</b> → estrellas del mes";
+        lista.appendChild(intro);
+        dibujarBloquePremios(
+          lista,
+          "Premios del Día",
+          "🌅",
+          "linear-gradient(135deg,#F97316,#EA580C)",
+          hoy,
+          PREMIOS_DIA,
+          "dia"
+        );
+        dibujarBloquePremios(
+          lista,
+          "Premios de la Semana",
+          "📅",
+          "linear-gradient(135deg,#8B5CF6,#6D28D9)",
+          semana,
+          PREMIOS_SEMANA,
+          "semana"
+        );
+        dibujarBloquePremios(
+          lista,
+          "Premios del Mes",
+          "🏆",
+          "linear-gradient(135deg,#F59E0B,#D97706)",
+          mes,
+          PREMIOS_MES,
+          "mes"
+        );
+      }
+
+      function dibujarBloquePremios(
+        container,
+        titulo,
+        icon,
+        grad,
+        puntos,
+        arr,
+        tier
+      ) {
+        var bloque = mk("div");
+        bloque.className = "kira-bloque";
+        var header = mk("div");
+        header.className = "kira-bloque-header";
+        header.style.background = grad;
+        var ic = mk("div");
+        ic.className = "kira-bloque-ico";
+        ic.textContent = icon;
+        var ti = mk("div");
+        ti.className = "kira-bloque-tit";
+        ti.textContent = titulo;
+        var pt = mk("div");
+        pt.className = "kira-bloque-pts";
+        pt.textContent = puntos + " ⭐";
+        header.appendChild(ic);
+        header.appendChild(ti);
+        header.appendChild(pt);
+        bloque.appendChild(header);
+        var body = mk("div");
+        body.className = "kira-bloque-body";
+
+        for (var i = 0; i < arr.length; i++) {
+          var p = arr[i],
+            pct = Math.min(100, Math.round((puntos / p.coste) * 100)),
+            falta = Math.max(0, p.coste - puntos),
+            listo = puntos >= p.coste,
+            recogido = listo && premioRecogido(p.nombre, tier);
+          var card = mk("div");
+          card.className =
+            "premio-card" + (recogido ? " recogido" : listo ? " listo" : "");
+          var em = mk("div", "", p.emoji);
+          em.className = "premio-emoji";
+          if (listo && !recogido)
+            em.style.animation =
+              "premioFloat 1s ease-in-out infinite alternate";
+          var info = mk("div");
+          info.className = "premio-info";
+          var nom = mk("div", "", p.nombre);
+          nom.className = "premio-nombre";
+          if (recogido) nom.style.color = "#16A34A";
+          else if (listo) nom.style.color = "#92400E";
+          var barBg = mk("div");
+          barBg.className = "premio-barra-bg";
+          var barFill = mk("div");
+          barFill.className = "premio-barra-fill";
+          barFill.style.width = pct + "%";
+          if (recogido)
+            barFill.style.background = "linear-gradient(90deg,#22C55E,#16A34A)";
+          barBg.appendChild(barFill);
+          var sub = mk("div");
+          sub.className = "premio-sub";
+          if (recogido) {
+            sub.textContent = "✅ ¡Recogido!";
+            sub.style.color = "#16A34A";
+          } else if (listo) {
+            sub.textContent = "✨ ¡Toca para recoger!";
+            sub.style.color = "#10B981";
+          } else {
+            sub.textContent = "Faltan " + falta + " ⭐ de " + p.coste;
+            sub.style.color = "#aaa";
+          }
+          info.appendChild(nom);
+          info.appendChild(barBg);
+          info.appendChild(sub);
+          var badge = mk("div");
+          badge.className = "premio-badge";
+          if (recogido) {
+            badge.textContent = "✅";
+            badge.style.cssText = "font-size:22px;flex-shrink:0";
+          } else if (listo) {
+            badge.textContent = "🎁 ¡Listo!";
+            badge.style.background = "#FFD700";
+            badge.style.color = "#1a1a1a";
+          } else {
+            badge.textContent = p.coste + " ⭐";
+            badge.style.background = "#F3F4F6";
+            badge.style.color = "#aaa";
+          }
+          if (listo && !recogido) {
+            card.style.cursor = "pointer";
+            (function (ej, no, t) {
+              card.onclick = function () {
+                recogerPremio(ej, no, t);
+              };
+            })(p.emoji, p.nombre, tier);
+          }
+          card.appendChild(em);
+          card.appendChild(info);
+          card.appendChild(badge);
+          body.appendChild(card);
+        }
+        bloque.appendChild(body);
+        container.appendChild(bloque);
+      }
+
+      function recogerPremio(emoji, nombre, tier) {
+        playSound("premio");
+        if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
+        if (!estado.premiosRecogidos) estado.premiosRecogidos = {};
+        if (!estado.premiosRecogidos[tier]) estado.premiosRecogidos[tier] = {};
+        estado.premiosRecogidos[tier][nombre] = hoyStr();
+        guardarPremios();
+        var overlay = mk(
+          "div",
+          "position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:fadeIn 0.2s ease"
+        );
+        var emojiEl = mk(
+          "div",
+          "font-size:120px;animation:premioFloat 1s ease-in-out infinite alternate"
+        );
+        emojiEl.textContent = emoji;
+        var titulo = mk(
+          "div",
+          "font-family:'Fredoka One',cursive;font-size:24px;color:#FFD700;margin-top:16px;text-shadow:0 2px 8px rgba(0,0,0,0.3)"
+        );
+        titulo.textContent = "¡Premio recogido!";
+        var nombreEl = mk(
+          "div",
+          "font-family:'Fredoka One',cursive;font-size:18px;color:#fff;margin-top:8px;opacity:0.9"
+        );
+        nombreEl.textContent = nombre;
+        var btn = mk(
+          "div",
+          "margin-top:24px;padding:14px 40px;background:linear-gradient(135deg,#FFD700,#FF8C00);border-radius:20px;font-family:'Fredoka One',cursive;font-size:18px;color:#fff;cursor:pointer;box-shadow:0 6px 20px rgba(255,215,0,0.4)"
+        );
+        btn.textContent = "¡Genial! 🎉";
+        btn.onclick = function () {
+          overlay.style.opacity = "0";
+          overlay.style.transition = "opacity 0.2s";
+          setTimeout(function () {
+            overlay.remove();
+          }, 200);
+          dibujarPremios();
+        };
+        overlay.appendChild(emojiEl);
+        overlay.appendChild(titulo);
+        overlay.appendChild(nombreEl);
+        overlay.appendChild(btn);
+        document.body.appendChild(overlay);
+        lanzarConfeti();
+      }
+
+      // ── STATS / HABILIDADES REALES ──────────────────────────────────
+      var HABILIDADES = [
+        {nombre:"Memoria",emoji:"🧠",color:"#8B5CF6",colorBg:"#EDE9FE",
+         desc:"Capacidad de recordar y prestar atención",
+         aprende:"Retención, concentración y atención al detalle",
+         juegos:[{id:"memoria",nombre:"Juego de Parejas",emoji:"🃏",ruta:"juegos/memoria.html"},
+                 {id:"esconde",nombre:"¿Quién se esconde?",emoji:"🙈",ruta:"juegos/esconde.html"}]},
+        {nombre:"Números",emoji:"🔢",color:"#3B82F6",colorBg:"#DBEAFE",
+         desc:"Habilidad para contar y pensar con lógica",
+         aprende:"Contar, reconocer números y razonamiento lógico",
+         juegos:[{id:"cuenta",nombre:"¡Cuenta conmigo!",emoji:"🔢",ruta:"juegos/cuenta.html"}]},
+        {nombre:"Valentía",emoji:"💪",color:"#EF4444",colorBg:"#FEE2E2",
+         desc:"Ser autónoma y cumplir sus misiones del día",
+         aprende:"Autonomía, hábitos saludables y responsabilidad",
+         fuente:"misiones"},
+        {nombre:"Reflejos",emoji:"🎯",color:"#F59E0B",colorBg:"#FEF3C7",
+         desc:"Velocidad y coordinación mano-ojo",
+         aprende:"Coordinación, velocidad de reacción y precisión",
+         juegos:[{id:"nave",nombre:"Nave Espacial",emoji:"🚀",ruta:"juegos/nave.html"},
+                 {id:"lanza",nombre:"Lanza Estrellas",emoji:"⭐",ruta:"juegos/lanza.html"},
+                 {id:"atrapalo",nombre:"¡Atrápalo!",emoji:"🎪",ruta:"juegos/atrapalo.html"}]},
+        {nombre:"Sabiduría",emoji:"📖",color:"#10B981",colorBg:"#D1FAE5",
+         desc:"Conocimiento del mundo a través de historias",
+         aprende:"Comprensión, vocabulario y conocimiento general",
+         juegos:[{id:"historias",nombre:"Historias de Kira",emoji:"📖",ruta:"juegos/historias.html"},
+                 {id:"intruso",nombre:"Encuentra el Intruso",emoji:"🔍",ruta:"juegos/intruso.html"},
+                 {id:"burbujas",nombre:"Burbujas",emoji:"🫧",ruta:"juegos/burbujas.html"}]}
+      ];
+      var STATS_MAX = 10;
+      var juegoStats = {};
+
+      function cargarJuegoStats(cb) {
+        firebase.database().ref("kiraGame/juegos").once("value").then(function(snap) {
+          juegoStats = snap.val() || {};
+          if (cb) cb();
+        }).catch(function() { juegoStats = {}; if (cb) cb(); });
+      }
+
+      function calcHabilidad(hab) {
+        if (hab.fuente === "misiones") {
+          var total = estado.total || 0;
+          if (total >= 500) return 10; if (total >= 350) return 9;
+          if (total >= 250) return 8; if (total >= 180) return 7;
+          if (total >= 120) return 6; if (total >= 80) return 5;
+          if (total >= 50) return 4; if (total >= 30) return 3;
+          if (total >= 15) return 2; return 1;
+        }
+        if (!hab.juegos) return 1;
+        var totalPlays = 0, totalBestStars = 0;
+        var maxPS = hab.juegos.length * 3;
+        hab.juegos.forEach(function(j) {
+          var s = juegoStats[j.id];
+          if (s) { totalPlays += s.plays || 0; totalBestStars += s.bestStars || 0; }
+        });
+        var playScore = Math.min(totalPlays * 0.5, 5);
+        var starScore = (totalBestStars / Math.max(maxPS, 1)) * 5;
+        return Math.max(1, Math.min(10, Math.round(playScore + starScore)));
+      }
+
+      function toggleDetail(idx) {
+        var detail = document.getElementById("stats-detail-" + idx);
+        var arrow = document.getElementById("stats-arrow-" + idx);
+        if (!detail) return;
+        if (detail.style.display === "none" || !detail.style.display) {
+          for (var i = 0; i < HABILIDADES.length; i++) {
+            var d = document.getElementById("stats-detail-" + i);
+            var a = document.getElementById("stats-arrow-" + i);
+            if (d) d.style.display = "none";
+            if (a) a.style.transform = "";
+          }
+          detail.style.display = "block";
+          if (arrow) arrow.style.transform = "rotate(180deg)";
+        } else {
+          detail.style.display = "none";
+          if (arrow) arrow.style.transform = "";
+        }
+      }
+
+      function abrirStats() {
+        cargarJuegoStats(function() {
+          var t = estado.total || 0;
+          var li = getNivel(t);
+          var lv = NIVELES[li];
+          var sig = NIVELES[Math.min(li + 1, NIVELES.length - 1)];
+          var esFinal = li === NIVELES.length - 1;
+          document.getElementById("stats-img").src = lv.img;
+          document.getElementById("stats-nombre").textContent = lv.emoji + " " + lv.n;
+          document.getElementById("stats-nivel-num").textContent = "Nivel " + (li + 1) + " \u00b7 " + t + " estrellas";
+          var grads = ["linear-gradient(135deg,#9CA3AF,#6B7280)","linear-gradient(135deg,#FFD700,#FF8C00)","linear-gradient(135deg,#EF4444,#DC2626)","linear-gradient(135deg,#8B5CF6,#6D28D9)","linear-gradient(135deg,#EC4899,#DB2777)","linear-gradient(135deg,#06B6D4,#0891B2)","linear-gradient(135deg,#FFD700,#FF0000)"];
+          document.getElementById("stats-header").style.background = grads[li] || grads[0];
+          var barsEl = document.getElementById("stats-bars");
+          barsEl.innerHTML = "";
+          for (var i = 0; i < HABILIDADES.length; i++) {
+            (function(idx) {
+              var h = HABILIDADES[idx];
+              var pts = calcHabilidad(h);
+              var pct = Math.round((pts / STATS_MAX) * 100);
+              var wrap = mk("div", "margin-bottom:4px");
+              var row = mk("div", "display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer;-webkit-tap-highlight-color:transparent");
+              row.onclick = function() { toggleDetail(idx); };
+              var left = mk("div", "display:flex;align-items:center;gap:6px;width:105px;flex-shrink:0");
+              left.appendChild(mk("div", "font-size:20px;width:28px;text-align:center;flex-shrink:0", h.emoji));
+              left.appendChild(mk("div", "font-family:\'Fredoka One\',cursive;font-size:13px;color:#1F2937", h.nombre));
+              var barBg = mk("div", "flex:1;height:14px;background:" + h.colorBg + ";border-radius:10px;overflow:hidden");
+              var barFill = mk("div", "height:100%;border-radius:10px;background:" + h.color + ";transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);width:0%");
+              barBg.appendChild(barFill);
+              var num = mk("div", "font-family:\'Fredoka One\',cursive;font-size:14px;color:" + h.color + ";width:32px;text-align:right;flex-shrink:0", pts + "/" + STATS_MAX);
+              var arrow = mk("div", "font-size:12px;color:#D1D5DB;flex-shrink:0;transition:transform 0.2s", "▼");
+              arrow.id = "stats-arrow-" + idx;
+              row.appendChild(left); row.appendChild(barBg); row.appendChild(num); row.appendChild(arrow);
+              wrap.appendChild(row);
+              // Detail panel
+              var detail = mk("div", "display:none;background:" + h.colorBg + ";border-radius:14px;padding:12px;margin:0 0 8px");
+              detail.id = "stats-detail-" + idx;
+              detail.appendChild(mk("div", "font-size:12px;font-weight:800;color:#4B5563;margin-bottom:8px;line-height:1.4", "📚 " + h.aprende));
+              if (h.juegos) {
+                detail.appendChild(mk("div", "font-family:\'Fredoka One\',cursive;font-size:11px;color:#6B7280;margin-bottom:6px", "🎮 Juegos que la mejoran:"));
+                h.juegos.forEach(function(j) {
+                  var s = juegoStats[j.id] || {};
+                  var jRow = mk("div", "display:flex;align-items:center;gap:8px;padding:6px 8px;background:#fff;border-radius:10px;margin-bottom:4px;border:1.5px solid rgba(0,0,0,0.06)");
+                  jRow.appendChild(mk("div", "font-size:20px;flex-shrink:0", j.emoji));
+                  var jInfo = mk("div", "flex:1;min-width:0");
+                  jInfo.appendChild(mk("div", "font-family:\'Fredoka One\',cursive;font-size:12px;color:#1F2937", j.nombre));
+                  jInfo.appendChild(mk("div", "font-size:10px;font-weight:800;color:#9CA3AF", s.plays ? "Jugado " + s.plays + " veces" + (s.bestStars ? " \u00b7 Mejor: " + "⭐".repeat(s.bestStars) : "") : "¡Aún no jugado!"));
+                  jRow.appendChild(jInfo);
+                  var jBtn = mk("div", "font-size:10px;font-weight:900;color:#fff;background:" + h.color + ";padding:4px 10px;border-radius:10px;flex-shrink:0;cursor:pointer;white-space:nowrap", "¡Jugar!");
+                  jBtn.onclick = function(e) { e.stopPropagation(); window.location.href = j.ruta; };
+                  jRow.appendChild(jBtn);
+                  detail.appendChild(jRow);
+                });
+              } else if (h.fuente === "misiones") {
+                detail.appendChild(mk("div", "font-size:11px;font-weight:800;color:#6B7280", "⭐ Se mejora completando las misiones del día. ¡Cada estrella cuenta!"));
+              }
+              wrap.appendChild(detail);
+              barsEl.appendChild(wrap);
+              (function(fill, p, delay) { setTimeout(function() { fill.style.width = p + "%"; }, 100 + delay * 80); })(barFill, pct, idx);
+            })(i);
+          }
+          var nextEl = document.getElementById("stats-next");
+          if (esFinal) { nextEl.textContent = "👑 ¡Todas las habilidades al máximo! ¡Eres SUPER KIRA!"; nextEl.style.color = "#D97706"; }
+          else { var falta = sig.min - t; nextEl.textContent = "Siguiente: " + sig.emoji + " " + sig.n + " (faltan " + falta + " ⭐)"; nextEl.style.color = "#aaa"; }
+          document.getElementById("stats-overlay").style.display = "flex";
+          playSound("star");
+        });
+      }
+
+
+      function cerrarStats() {
+        document.getElementById("stats-overlay").style.display = "none";
+      }
+
+      function mostrarCelebracion(pts, ch) {
+        playSound("star");
+        if (navigator.vibrate) navigator.vibrate(50);
+        document.getElementById("cel-char").src =
+          "/personajes/" + ch.id + ".png";
+        document.getElementById("cel-bubble").textContent =
+          ch.frases[Math.floor(Math.random() * ch.frases.length)];
+        document.getElementById("cel-stars").textContent = "+" + pts + " ⭐";
+        document.getElementById("cel").classList.add("on");
+        lanzarConfeti();
+      }
+
+      function cerrarCel() {
+        document.getElementById("cel").classList.remove("on");
+        if (pendingClose) {
+          var fn = pendingClose;
+          pendingClose = null;
+          setTimeout(fn, 200);
+        }
+      }
+
+      function calcularStreak() {
+        var dias = estado.historialDias || {},
+          hoy = new Date(),
+          streak = 0;
+        if ((estado.hoy || 0) > 0) streak = 1;
+        else return 0;
+        for (var i = 1; i < 365; i++) {
+          var d = new Date(hoy);
+          d.setDate(hoy.getDate() - i);
+          var key =
+            d.getFullYear() +
+            "-" +
+            String(d.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(d.getDate()).padStart(2, "0");
+          if ((dias[key] || 0) > 0) streak++;
+          else break;
+        }
+        return streak;
+      }
+    </script>
+  </body>
+</html>
